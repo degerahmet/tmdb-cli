@@ -20,6 +20,8 @@ This project is built as a project-based learning exercise to practice API integ
 - Go 1.20+
 - TMDB API key (v3)
 
+> You can visit [TMDB Documentation](https://developer.themoviedb.org/docs/getting-started) page to get your API key.
+
 ## Setup
 
 Clone the repository:
@@ -39,10 +41,26 @@ cp .env.example .env
 
 Then set your TMDB API key in `.env` file.
 
-## Build
+## Run locally (go run/go build)
 
 ```bash
 go build -o tmdb ./cmd/tmdb
+```
+
+## Run with Docker
+
+### Build locally
+
+```bash
+docker build -t tmdb-cli .
+docker run --rm --env-file .env tmdb-cli --type popular --limit 5
+```
+
+### Run from GitHub Container Registry (GHCR)
+
+```bash
+docker pull ghcr.io/degerahmet/tmdb-cli:latest
+docker run --rm --env-file .env ghcr.io/degerahmet/tmdb-cli:latest --type popular --limit 5
 ```
 
 ## Usage
