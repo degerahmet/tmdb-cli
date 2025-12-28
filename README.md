@@ -1,5 +1,10 @@
 # tmdb-cli
 
+![CI](https://github.com/degerahmet/tmdb-cli/actions/workflows/ci.yml/badge.svg)
+![Go](https://img.shields.io/badge/Go-1.25%2B-blue)
+![License](https://img.shields.io/badge/License-MIT-green)
+![Docker](https://img.shields.io/badge/Docker-GHCR-blue)
+
 A command-line tool written in Go that retrieves now playing, popular, top-rated, and upcoming movies from the TMDB API and displays them in the terminal.
 
 This project is built as a project-based learning exercise to practice API integration, JSON handling, and CLI development in Go.
@@ -17,7 +22,7 @@ This project is built as a project-based learning exercise to practice API integ
 
 ## Requirements
 
-- Go 1.20+
+- Go 1.25+
 - TMDB API key (v3)
 
 > You can visit [TMDB Documentation](https://developer.themoviedb.org/docs/getting-started) page to get your API key.
@@ -29,7 +34,7 @@ Clone the repository:
 ```bash
 git clone https://github.com/degerahmet/tmdb-cli.git
 cd tmdb-cli
-````
+```
 
 ### Environment Variables
 
@@ -44,7 +49,14 @@ Then set your TMDB API key in `.env` file.
 ## Run locally (go run/go build)
 
 ```bash
+# build
 go build -o tmdb ./cmd/tmdb
+
+# run
+./tmdb --type popular --limit 5
+
+# or run without building
+go run ./cmd/tmdb --type popular --limit 5
 ```
 
 ## Run with Docker
@@ -61,6 +73,25 @@ docker run --rm --env-file .env tmdb-cli --type popular --limit 5
 ```bash
 docker pull ghcr.io/degerahmet/tmdb-cli:latest
 docker run --rm --env-file .env ghcr.io/degerahmet/tmdb-cli:latest --type popular --limit 5
+```
+
+### Versioned images
+
+This repo publishes versioned Docker images to GHCR on git tags (e.g., `v0.1.1`).
+
+```bash
+# pull a specific version
+docker pull ghcr.io/degerahmet/tmdb-cli:0.1.0
+
+# run a specific version
+docker run --rm --env-file .env ghcr.io/degerahmet/tmdb-cli:0.1.0 --type popular --limit 5
+```
+
+To publish a new version:
+
+```bash
+git tag v0.1.0
+git push origin v0.1.0
 ```
 
 ## Usage
@@ -99,9 +130,3 @@ This project is for educational use only and is not affiliated with or endorsed 
 ## License
 
 MIT License. See the `LICENSE` file for details.
-
-
-> 🚧 Learning-focused CLI project built with Go
-
-![Go](https://img.shields.io/badge/Go-1.20+-blue)
-![License](https://img.shields.io/badge/License-MIT-green)
