@@ -8,17 +8,21 @@ import (
 )
 
 func printMovies(movieType string, movies []tmdb.Movie, limit int) {
-	label := map[string]string{
+	labels := map[string]string{
 		"playing":  "Now Playing",
 		"popular":  "Popular",
 		"top":      "Top Rated",
 		"upcoming": "Upcoming",
-	}[movieType]
+	}
+
+	label, ok := labels[movieType]
+	if !ok {
+		label = movieType
+	}
 
 	if label == "" {
 		label = "Movies"
 	}
-
 	if limit <= 0 {
 		limit = 10
 	}
@@ -42,7 +46,8 @@ func printMovies(movieType string, movies []tmdb.Movie, limit int) {
 		if date == "" {
 			date = "N/A"
 		}
-		fmt.Printf("%2d) %s (%s) — Rating: %.1f\n", i+1, m.Title, date, m.VoteAverage)
+		fmt.Printf("%2d) [%d] %s (%s) — Rating: %.1f\n", i+1, m.ID, m.Title, date, m.VoteAverage)
 	}
+
 	fmt.Println()
 }
