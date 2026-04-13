@@ -3,6 +3,7 @@ package main
 import (
 	"flag"
 	"fmt"
+	"net/url"
 	"os"
 	"strings"
 
@@ -18,13 +19,21 @@ func main() {
 
 	typeFlag := flag.String("type", "popular", "movie type")
 	limitFlag := flag.Int("limit", 10, "limit")
+	queryFlag := flag.String("query", "", "search query")
 	flag.Parse()
 
-	endpoint, err := getEndpoint(*typeFlag)
-	if err != nil {
-		fmt.Println("Error:", err)
-		cli.PrintUsage()
-		os.Exit(1)
+	var endpoint string
+	var err error
+
+	if *queryFlag != "" {
+		endpoint = "/search/movie?query=" + url.QueryEscape(*queryFlag)
+	} else {
+		endpoint, err = getEndpoint(*typeFlag)
+		if err != nil {
+			fmt.Println("Error:", err)
+			cli.PrintUsage()
+			os.Exit(1)
+		}
 	}
 
 	apiKey, err := config.TMDBApiKey()
@@ -39,5 +48,12 @@ func main() {
 		os.Exit(1)
 	}
 
-	printMovies(strings.ToLower(*typeFlag), movies, *limitFlag)
+	var moviesLabel string
+	if *queryFlag != "" {
+		moviesLabel = fmt.Sprintf("Search Results for %q", *queryFlag)
+	} else {
+		moviesLabel = strings.ToLower(*typeFlag)
+	}
+
+	printMovies(moviesLabel, movies, *limitFlag)
 }
